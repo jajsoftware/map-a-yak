@@ -3,3 +3,5 @@
 MapAYak/bin/
 MapAYak/obj/
 MapAYak/wwwroot/lib/
+MapAYak/Properties/PublishProfiles/
+MapAYak/.config/dotnet-tools.json

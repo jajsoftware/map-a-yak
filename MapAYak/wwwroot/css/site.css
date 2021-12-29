@@ -7,3 +7,21 @@
     height: 100%;
     width: 100%;
 }
+
+.float {
+    position: fixed;
+    top: 2%;
+    right: 2%;
+    z-index: 1000;
+}
+
+.background-image {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-image: url('../images/kayak.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: opacity(90%);
+}

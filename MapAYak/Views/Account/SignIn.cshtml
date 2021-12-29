@@ -1,0 +1,44 @@
+﻿@model SignInViewModel
+@{
+    Layout = "_Layout_Account";
+}
+
+<h3 class="fw-bold mb-5">Map-A-Yak</h3>
+
+<form asp-controller="Account" asp-action="SignIn" method="post">
+
+    @if (Model != null && Model.ShowResendEmailConfirmation)
+    {
+        <p class="text-danger">Email Not Confirmed - <a asp-controller="Account" asp-action="ResendEmailConfirmation" class="text-danger">Resend Confirmation</a></p>
+    }
+    else
+    {
+        <div asp-validation-summary="ModelOnly" class="text-danger d-flex"></div>
+    }
+
+    <div class="form-outline mb-4">
+        <input asp-for="Email" autocomplete="email" placeholder="example@example.com" class="form-control form-control-lg" />
+        <label asp-for="Email" class="form-label"></label>
+        <div><span asp-validation-for="Email" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-outline mb-4">
+        <input asp-for="Password" autocomplete="current-password" placeholder="password" class="form-control form-control-lg" />
+        <label asp-for="Password" class="form-label"></label>
+        <div><span asp-validation-for="Password" class="text-danger"></span></div>
+    </div>
+
+    <div class="form-check d-flex justify-content-start mb-4">
+        <input asp-for="RememberPassword" class="form-check-input" />
+        <label asp-for="RememberPassword" class="form-check-label ms-1"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
+
+</form>
+
+<hr class="my-4">
+
+<a asp-controller="Account" asp-action="ForgotPassword" class="small text-muted">Forgot password?</a>
+<div>Need to create an account? <a asp-controller="Account" asp-action="Register">Register Here</a></div>
+<a asp-controller="Home" asp-action="Index" class="small text-danger">Cancel</a>

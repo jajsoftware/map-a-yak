@@ -1,3 +1,21 @@
-﻿<partial name="_Partial_Account" />
+﻿<div class="float">
+    <partial name="_Partial_Create" />
+    <partial name="_Partial_Account" />
+</div>
+
 <div id="map"></div>
+
+<partial name="_Partial_Modal_Save" model="new Route()" />
+<partial name="_Partial_Modal_Save" model="new Location()" />
+<partial name="_Partial_Modal_Discard" />
+
+@section Scripts {
+<script src="/js/viewAll.js"></script>
+<script src="/js/createRoute.js"></script>
+<script src="/js/createLocation.js"></script>
 <script src="/js/site.js"></script>
+<script>
+    var site = new Site();
+    var layer = site.getLayer();
+</script>
+}

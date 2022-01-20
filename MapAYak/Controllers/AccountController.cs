@@ -39,6 +39,8 @@ namespace MapAYak.Controllers
         [HttpPost]
         public IActionResult SignIn(SignInViewModel model)
         {
+            _signInManager.SignOutAsync().Wait();
+
             model.ShowResendEmailConfirmation = false;
 
             if (!ModelState.IsValid)
@@ -72,7 +74,7 @@ namespace MapAYak.Controllers
         [HttpGet]
         public IActionResult SignOutUser()
         {
-            _signInManager.SignOutAsync();
+            _signInManager.SignOutAsync().Wait();
 
             return RedirectToAction("Index", "Home");
         }
@@ -116,6 +118,8 @@ namespace MapAYak.Controllers
         [HttpGet]
         public IActionResult ConfirmEmail(string token, string email)
         {
+            _signInManager.SignOutAsync().Wait();
+
             ViewBag.Message = "Error confirming your email.";
 
             var user = _userManager.FindByEmailAsync(email).Result;

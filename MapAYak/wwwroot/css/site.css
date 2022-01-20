@@ -25,3 +25,7 @@
     background-repeat: no-repeat;
     filter: opacity(90%);
 }
+
+.leaflet-container.crosshair-cursor {
+    cursor: crosshair;
+}

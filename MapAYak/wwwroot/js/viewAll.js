@@ -64,9 +64,10 @@ ViewAll.prototype.drawLocations = function (locations) {
 
     for (var location of locations) {
 
-        var latlng = L.latLng(location.latitude, location.longitude);
-        var icon = location.type === 0 ? this.site.yellowMarker : this.site.orangeMarker;
+        var marker = L.marker(L.latLng(location.latitude, location.longitude));
+        marker.addTo(this.map);
 
-        L.marker(latlng, { icon: icon }).addTo(this.map);
+        var icon = location.type === 0 ? this.site.yellowMarker : this.site.orangeMarker;
+        marker.setIcon(icon);
     }
 }

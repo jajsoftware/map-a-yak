@@ -29,3 +29,8 @@
 .leaflet-container.crosshair-cursor {
     cursor: crosshair;
 }
+
+.text-marker-icon {
+    width: auto;
+    height: 25px;
+}

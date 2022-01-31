@@ -95,12 +95,12 @@ Site.prototype.initializeMarkers = function () {
     });
 
     this.yellowMarker = L.icon({
-        iconUrl: 'images/green-marker.png',
+        iconUrl: 'images/yellow-marker.png',
         shadowUrl: 'images/marker-shadow.png'
     });
 
     this.orangeMarker = L.icon({
-        iconUrl: 'images/red-marker.png',
+        iconUrl: 'images/orange-marker.png',
         shadowUrl: 'images/marker-shadow.png'
     });
 }

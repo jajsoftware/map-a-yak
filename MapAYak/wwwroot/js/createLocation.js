@@ -50,9 +50,15 @@ CreateLocation.prototype.showSave = function () {
 
 CreateLocation.prototype.save = function () {
 
+    var body = new FormData(document.getElementById('saveLocationForm'));
+
+    body.append('Type', this.site.editMode === "CreatePortage" ? 0 : 1);
+    body.append('Latitude', this.location.latitude);
+    body.append('Longitude', this.location.longitude);
+
     var options = {
         method: 'POST',
-        body: new FormData(document.getElementById('saveLocationForm'))
+        body: body
     };
 
     fetch('/data/saveLocation', options)
@@ -99,13 +105,12 @@ CreateLocation.prototype.onMapClick = function (e) {
 //==============================================================================
 CreateLocation.prototype.addLocation = function (latitude, longitude) {
 
-    var latlng = L.latLng(latitude, longitude);
-    var icon = this.site.editMode === "CreatePortage" ? this.site.yellowMarker : this.site.orangeMarker;
-
-    this.marker = L.marker(latlng, {
-        icon: icon,
-        draggable: true
-    });
+    this.marker = L.marker(
+        L.latLng(latitude, longitude),
+        { draggable: true });
 
     this.marker.addTo(this.map);
+
+    var icon = this.site.editMode === "CreatePortage" ? this.site.yellowMarker : this.site.orangeMarker;
+    this.marker.setIcon(icon);
 }

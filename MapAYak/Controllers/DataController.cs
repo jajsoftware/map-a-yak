@@ -56,7 +56,7 @@ namespace MapAYak.Controllers
             if (!ModelState.IsValid)
                 return PartialView("_Partial_Modal_Save", route);
 
-            //_routeRepository.SaveRoute(route);
+            _routeRepository.SaveRoute(route);
 
             return StatusCode(201);
         }
@@ -70,7 +70,7 @@ namespace MapAYak.Controllers
             if (!ModelState.IsValid)
                 return PartialView("_Partial_Modal_Save", location);
 
-            //_locationRepository.SaveLocation(location);
+            _locationRepository.SaveLocation(location);
 
             return StatusCode(201);
         }

@@ -13,8 +13,15 @@ function Site() {
     this.layer;
 
     this.modalValues = {
-        layerDescription: ""
+        layerType: ko.observable(''),
+        layerUser: ko.observable(''),
+        layerName: ko.observable(''),
+        layerDescription: ko.observable(''),
+        layerMarkerPath: ko.observable('')
     };
+
+    this.currentCoordinates = JSON.parse(window.sessionStorage.getItem("currentCoordinates"));
+    this.currentZoom = JSON.parse(window.sessionStorage.getItem("currentZoom"));
 
     ko.applyBindings(this.modalValues);
 
@@ -56,6 +63,8 @@ Site.prototype.onBeforeUnload = function () {
 
     var self = site;
 
+    window.sessionStorage.setItem("currentCoordinates", JSON.stringify(self.map.getCenter()));
+    window.sessionStorage.setItem("currentZoom", self.map.getZoom());
     window.sessionStorage.setItem("editMode", self.editMode);
 
     if (self.layer.onBeforeUnloadLayer)
@@ -76,8 +85,10 @@ Site.prototype.initializeMap = function () {
 
     L.tileLayer(mapUrl, mapOptions).addTo(this.map);
 
-    // Save coordinates and zoom level as cookies. (just Michigan right now)
-    this.map.setView([43.5, -84.5], 7);
+    if (this.currentCoordinates && this.currentZoom)
+        this.map.setView(this.currentCoordinates, this.currentZoom);
+    else
+        this.map.setView([43.5, -84.5], 7); // Defaults to Michigan.
 }
 
 Site.prototype.initializeMarkers = function () {

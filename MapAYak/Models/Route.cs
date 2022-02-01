@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MapAYak.Models
 {
@@ -21,8 +23,20 @@ namespace MapAYak.Models
 
 
 
+        [JsonIgnore]
         public IdentityUser User { get; set; }
 
         public IEnumerable<Coordinate> Coordinates { get; set; }
+
+
+
+        [NotMapped]
+        public string UserName
+        {
+            get
+            {
+                return User.UserName;
+            }
+        }
     }
 }

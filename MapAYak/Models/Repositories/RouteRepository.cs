@@ -24,7 +24,9 @@ namespace MapAYak.Models.Repositories
 
         public IEnumerable<Route> GetRoutes()
         {
-            return _appDbContext.Routes.Include(c => c.Coordinates.OrderBy(o => o.Order));
+            return _appDbContext.Routes
+                .Include(c => c.User)
+                .Include(c => c.Coordinates.OrderBy(o => o.Order));
         }
 
         public void SaveRoute(Route route)

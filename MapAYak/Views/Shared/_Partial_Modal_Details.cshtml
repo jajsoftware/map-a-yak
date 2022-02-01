@@ -1,0 +1,22 @@
+﻿<div id="detailsModal" class="layer-details" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <img data-bind="attr:{src: layerMarkerPath}" class="layer-details-marker-icon" alt="Marker">
+                    <span data-bind="text: layerType" class="align-middle ms-2"></span>
+                </h4>
+                <a onclick="layer.closeDetails()" class="btn-close" aria-label="Close"></a>
+            </div>
+            <div class="modal-body">
+                <h5 data-bind="text: layerName"></h5>
+                <p data-bind="text: layerDescription"></p>
+                <br />
+                <h6>Created By: <span data-bind="text: layerUser"></span></h6>
+            </div>
+            <div class="modal-footer">
+                <a onclick="layer.closeDetails()" class="btn btn-secondary">Close</a>
+            </div>
+        </div>
+    </div>
+</div>

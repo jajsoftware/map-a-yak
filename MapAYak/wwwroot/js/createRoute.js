@@ -13,6 +13,8 @@ function CreateRoute(site) {
 
     this.map.on('click', this.onMapClick);
 
+    this.site.modalValues.layerType("Route");
+
     var coordinates = JSON.parse(window.sessionStorage.getItem("coordinates"));
     if (!coordinates || coordinates.length === 0)
         return;
@@ -186,8 +188,8 @@ CreateRoute.prototype.createGuid = function () {
 
 CreateRoute.prototype.updateLine = function () {
 
-    if (this.line && this.map.hasLayer(this.line))
-        this.map.removeLayer(this.line);
+    if (this.line)
+        this.line.remove();
 
     var coordinates = this.coordinates.map(c => [c.latitude, c.longitude]);
 

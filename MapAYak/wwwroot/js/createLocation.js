@@ -10,6 +10,8 @@ function CreateLocation(site) {
 
     this.map.on('click', this.onMapClick);
 
+    this.site.modalValues.layerType(this.site.editMode === "CreatePortage" ? "Portage" : "Campsite");
+
     this.location = JSON.parse(window.sessionStorage.getItem("location"));
     if (this.location)
         this.addLocation(this.location.latitude, this.location.longitude);

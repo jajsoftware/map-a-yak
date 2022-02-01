@@ -1,4 +1,5 @@
 ﻿using MapAYak.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace MapAYak.Models.Repositories
 {
@@ -23,7 +24,8 @@ namespace MapAYak.Models.Repositories
 
         public IEnumerable<Location> GetLocations()
         {
-            return _appDbContext.Locations;
+            return _appDbContext.Locations
+                .Include(c => c.User);
         }
 
         public void SaveLocation(Location location)

@@ -20,6 +20,7 @@ function Site() {
         layerMarkerPath: ko.observable('')
     };
 
+    this.userId = window.sessionStorage.getItem("userId");
     this.currentCoordinates = JSON.parse(window.sessionStorage.getItem("currentCoordinates"));
     this.currentZoom = JSON.parse(window.sessionStorage.getItem("currentZoom"));
 
@@ -127,5 +128,9 @@ Site.prototype.setEditMode = function () {
     else {
         document.getElementById("viewLayerDiv").style.display = 'none';
         L.DomUtil.addClass(this.map._container, 'crosshair-cursor');
+
+        var userLayersButton = document.getElementById("userLayersButton");
+        if (userLayersButton)
+            userLayersButton.classList.add('disabled');
     }
 }

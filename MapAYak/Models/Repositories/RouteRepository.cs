@@ -29,6 +29,19 @@ namespace MapAYak.Models.Repositories
                 .Include(c => c.Coordinates.OrderBy(o => o.Order));
         }
 
+        public IEnumerable<Route> GetUserRoutes(string userId)
+        {
+            return _appDbContext.Routes.Where(c => c.UserId == userId);
+        }
+
+        public Route GetRoute(string name)
+        {
+            return _appDbContext.Routes
+                .Where(c => c.Name == name)
+                .Include(c => c.Coordinates)
+                .SingleOrDefault();
+        }
+
         public void SaveRoute(Route route)
         {
             var count = 0;
@@ -36,6 +49,33 @@ namespace MapAYak.Models.Repositories
                 coordinate.Order = count++;
 
             _appDbContext.Routes.Add(route);
+
+            _appDbContext.SaveChanges();
+        }
+
+        public void UpdateRoute(Route oldRoute, Route newRoute)
+        {
+            oldRoute.Description = newRoute.Description;
+
+            foreach (var oldCoordinate in oldRoute.Coordinates)
+                _appDbContext.Remove(oldCoordinate);
+
+            var count = 0;
+            foreach (var newCoordinate in newRoute.Coordinates)
+                _appDbContext.Add(new Coordinate()
+                {
+                    RouteId = oldRoute.Id,
+                    Order = count++,
+                    Latitude = newCoordinate.Latitude,
+                    Longitude = newCoordinate.Longitude
+                });
+
+            _appDbContext.SaveChanges();
+        }
+
+        public void DeleteRoute(Route route)
+        {
+            _appDbContext.Remove(route);
 
             _appDbContext.SaveChanges();
         }

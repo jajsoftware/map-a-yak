@@ -6,6 +6,8 @@ namespace MapAYak.Models
 {
     public class Coordinate
     {
+        #region Database Fields
+
         public int Id { get; set; }
 
         public int RouteId { get; set; }
@@ -20,9 +22,13 @@ namespace MapAYak.Models
         [Range(-180, 180)]
         public decimal Longitude { get; set; }
 
+        #endregion
 
+        #region Relations
 
         [JsonIgnore]
         public Route Route { get; set; }
+
+        #endregion
     }
 }

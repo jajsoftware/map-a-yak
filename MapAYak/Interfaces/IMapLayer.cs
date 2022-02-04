@@ -1,8 +1,11 @@
-﻿namespace MapAYak.Interfaces
+﻿using MapAYak.Models;
+
+namespace MapAYak.Interfaces
 {
     public interface IMapLayer
     {
-        string Name { get; set; }
-        string Description { get; set; }
+        LayerType LayerType { get; }
+        string Name { get; }
+        string Description { get; }
     }
 }

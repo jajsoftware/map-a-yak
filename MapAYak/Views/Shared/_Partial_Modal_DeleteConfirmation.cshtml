@@ -1,0 +1,17 @@
+﻿<div id="deleteConfirmationModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete <span data-bind="text: layerType"></span></h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <span data-bind="text: layerName" class="fw-bold text-danger"></span>?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a onclick="layer.deleteUserLayer()" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

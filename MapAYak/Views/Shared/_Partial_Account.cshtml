@@ -8,15 +8,20 @@
             @UserManager.GetUserName(User)
         </button>
         <div class="dropdown-menu dropdown-menu-end" style="min-width: 0px;">
+            <a id="userLayersButton" onclick="layer.showUserLayers()" class="dropdown-item">My Routes & Locations</a>
             <a asp-controller="Account" asp-action="SignOutUser" class="dropdown-item">Sign Out</a>
         </div>
     </div>
+
+    <script>
+        window.sessionStorage.setItem("userId", "@UserManager.GetUserId(User)");
+    </script>
 }
 else
 {
     <a asp-controller="Account" asp-action="SignIn" class="btn btn-primary">Sign In</a>
-}
 
-<script>
-    window.sessionStorage.setItem("authenticated", "@SignInManager.IsSignedIn(User)");
-</script>
+    <script>
+        window.sessionStorage.setItem("userId", "");
+    </script>
+}

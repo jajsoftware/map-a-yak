@@ -10,8 +10,11 @@ namespace MapAYak.Models
     [Index(nameof(Name), IsUnique = true)]
     public class Location : IMapLayer
     {
+        #region Database Fields
+
         public int Id { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public LocationType Type { get; set; }
@@ -31,20 +34,35 @@ namespace MapAYak.Models
         [Range(-180, 180)]
         public decimal Longitude { get; set; }
 
+        #endregion
 
+        #region Relations
 
         [JsonIgnore]
         public IdentityUser User { get; set; }
 
+        #endregion
 
+        #region Non-Database Fields
+
+        [NotMapped]
+        public LayerType LayerType
+        {
+            get
+            {
+                return Type == LocationType.Portage ? LayerType.Portage : LayerType.Campsite;
+            }
+        }
 
         [NotMapped]
         public string UserName
         {
             get
             {
-                return User.UserName;
+                return User?.UserName;
             }
         }
+
+        #endregion
     }
 }

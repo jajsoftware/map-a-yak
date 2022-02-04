@@ -10,8 +10,11 @@ namespace MapAYak.Models
     [Index(nameof(Name), IsUnique = true)]
     public class Route : IMapLayer
     {
+        #region Database Fields
+
         public int Id { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         [Required]
@@ -21,22 +24,37 @@ namespace MapAYak.Models
         [MaxLength(10000)]
         public string Description { get; set; }
 
+        #endregion
 
+        #region Relations
 
         [JsonIgnore]
         public IdentityUser User { get; set; }
 
         public IEnumerable<Coordinate> Coordinates { get; set; }
 
+        #endregion
 
+        #region Non-Database Fields
+
+        [NotMapped]
+        public LayerType LayerType
+        {
+            get
+            {
+                return LayerType.Route;
+            }
+        }
 
         [NotMapped]
         public string UserName
         {
             get
             {
-                return User.UserName;
+                return User?.UserName;
             }
         }
+
+        #endregion
     }
 }

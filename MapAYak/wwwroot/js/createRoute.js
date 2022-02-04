@@ -10,10 +10,14 @@ function CreateRoute(site) {
     this.coordinates = [];
     this.markers = [];
     this.line;
+    this.existingRouteName;
 
-    this.map.on('click', this.onMapClick);
+    this.discardModal = new bootstrap.Modal(document.getElementById('discardModal'));
+    this.saveModal = new bootstrap.Modal(document.getElementById('saveRouteModal'));
 
     this.site.modalValues.layerType("Route");
+
+    this.map.on('click', this.onMapClick);
 
     var coordinates = JSON.parse(window.sessionStorage.getItem("coordinates"));
     if (!coordinates || coordinates.length === 0)
@@ -27,6 +31,15 @@ function CreateRoute(site) {
         this.markers.at(-1).setIcon(this.redMarker);
 
     this.updateLine();
+
+    this.existingRouteName = window.sessionStorage.getItem("existingLayerName");
+    if (this.existingRouteName) {
+        var nameInput = document.getElementById('saveRouteNameInput');
+        nameInput.value = this.existingRouteName;
+        nameInput.readOnly = true;
+
+        document.getElementById('saveRouteDescriptionInput').value = window.sessionStorage.getItem("existingLayerDescription");
+    }
 }
 
 //==============================================================================
@@ -34,37 +47,37 @@ function CreateRoute(site) {
 //==============================================================================
 CreateRoute.prototype.showDiscard = function () {
 
-    if (this.coordinates.length === 0) {
+    if (this.coordinates.length === 0 && !this.existingRouteName) {
         this.site.editMode = "View";
         window.location.reload();
         return;
     }
 
-    var modal = new bootstrap.Modal(document.getElementById('discardModal'));
-    modal.show();
+    this.discardModal.show();
 }
 
 CreateRoute.prototype.discard = function () {
 
-    this.coordinates = [];
     this.site.editMode = "View";
+    this.coordinates = [];
+    this.existingRouteName = null;
     window.location.reload();
 }
 
 CreateRoute.prototype.showSave = function () {
 
-    if (window.sessionStorage.getItem("authenticated") !== "True") {
+    if (!this.site.userId || this.site.userId === '') {
         window.location = "/Account/SignIn";
         return;
     }
 
-    var modal = new bootstrap.Modal(document.getElementById('saveRouteModal'));
-    modal.show();
+    this.saveModal.show();
 }
 
 CreateRoute.prototype.save = function () {
 
     var body = new FormData(document.getElementById('saveRouteForm'));
+    body.append('UserId', this.site.userId);
 
     for (var i = 0; i < this.coordinates.length; i++) {
         body.append(`Coordinates[${i}].Latitude`, this.coordinates[i].latitude);
@@ -76,11 +89,16 @@ CreateRoute.prototype.save = function () {
         body: body
     };
 
-    fetch('/data/saveRoute', options)
+    var url = '/data/saveRoute';
+    if (this.existingRouteName)
+        url = '/data/updateRoute';
+
+    fetch(url, options)
         .then(response => {
             if (response.status == 201) {
-                this.coordinates = [];
                 this.site.editMode = "View";
+                this.coordinates = [];
+                this.existingRouteName = null;
                 window.location.reload();
             }
             else
@@ -115,6 +133,11 @@ CreateRoute.prototype.removeCoordinate = function (coordinateGuid) {
 CreateRoute.prototype.onBeforeUnloadLayer = function () {
 
     window.sessionStorage.setItem("coordinates", JSON.stringify(this.coordinates));
+
+    if (!this.existingRouteName) {
+        window.sessionStorage.removeItem("existingLayerName");
+        window.sessionStorage.removeItem("existingLayerDescription");
+    }
 }
 
 //==============================================================================

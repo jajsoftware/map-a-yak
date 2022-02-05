@@ -50,6 +50,7 @@ ViewAll.prototype.createCampsite = function () {
 ViewAll.prototype.closeDetails = function () {
 
     this.hideRoute();
+    this.hideLocation();
     document.getElementById('detailsModal').style.display = 'none';
 }
 
@@ -142,7 +143,7 @@ ViewAll.prototype.onRouteClick = function (e) {
     var self = layer;
 
     if (self.selectedRouteName === e.target.name)
-        self.hideRoute();
+        self.closeDetails();
     else
         self.showRoute(e.target);
 }
@@ -164,7 +165,7 @@ ViewAll.prototype.onLocationClick = function (e) {
     var self = layer;
 
     if (self.selectedLocationName === e.target.name)
-        self.hideLocation();
+        self.closeDetails();
     else
         self.showLocation(e.target);
 }
@@ -218,12 +219,17 @@ ViewAll.prototype.drawLocations = function (locations) {
 ViewAll.prototype.showRoute = function (startMarker) {
 
     this.hideRoute();
+    this.hideLocation();
     this.selectedRouteName = startMarker.name;
 
     var coordinates = [];
     for (var coordinate of startMarker.coordinates) {
         coordinates.push([coordinate.latitude, coordinate.longitude]);
     }
+
+    var distance = 0;
+    for (var i = 0; i < coordinates.length - 1; i++)
+        distance += L.latLng(coordinates[i]).distanceTo(L.latLng(coordinates[i + 1]));
 
     var lineOptions = {
         color: 'blue',
@@ -245,6 +251,8 @@ ViewAll.prototype.showRoute = function (startMarker) {
     this.site.modalValues.layerUser(startMarker.user);
     this.site.modalValues.layerDescription(startMarker.description);
     this.site.modalValues.layerMarkerPath('/images/blue-marker.png');
+    this.site.modalValues.routeDistance((distance / 1609.34).toFixed(2)); // Converts meters to miles and rounds.
+    document.getElementById('distanceInfo').style.display = 'block';
     document.getElementById('detailsModal').style.display = 'block';
 }
 
@@ -258,8 +266,6 @@ ViewAll.prototype.hideRoute = function () {
     this.selectedRouteLine.remove();
     this.selectedRouteEndMarker.remove();
     this.selectedRouteStartMarker.setIcon(this.site.defaultMarker);
-
-    document.getElementById('detailsModal').style.display = 'none';
 
     this.selectedRouteName = '';
     this.selectedRouteLine = null;
@@ -310,12 +316,11 @@ ViewAll.prototype.showLocation = function (marker) {
         this.site.modalValues.layerMarkerPath('/images/orange-marker.png');
     }
 
+    document.getElementById('distanceInfo').style.display = 'none';
     document.getElementById('detailsModal').style.display = 'block';
 }
 
 ViewAll.prototype.hideLocation = function () {
-
-    document.getElementById('detailsModal').style.display = 'none';
 
     this.selectedLocationName = '';
 }

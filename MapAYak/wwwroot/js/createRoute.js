@@ -14,8 +14,10 @@ function CreateRoute(site) {
 
     this.discardModal = new bootstrap.Modal(document.getElementById('discardModal'));
     this.saveModal = new bootstrap.Modal(document.getElementById('saveRouteModal'));
+    document.getElementById('distanceModal').style.display = 'block';
 
     this.site.modalValues.layerType("Route");
+    this.site.modalValues.routeDistance("0.00");
 
     this.map.on('click', this.onMapClick);
 
@@ -224,4 +226,10 @@ CreateRoute.prototype.updateLine = function () {
     };
 
     this.line = L.polyline(coordinates, lineOptions).addTo(this.map);
+
+    var distance = 0;
+    for (var i = 0; i < coordinates.length - 1; i++)
+        distance += L.latLng(coordinates[i]).distanceTo(L.latLng(coordinates[i + 1]));
+
+    this.site.modalValues.routeDistance((distance / 1609.34).toFixed(2)); // Converts meters to miles and rounds.
 }

@@ -17,7 +17,8 @@ function Site() {
         layerUser: ko.observable(''),
         layerName: ko.observable(''),
         layerDescription: ko.observable(''),
-        layerMarkerPath: ko.observable('')
+        layerMarkerPath: ko.observable(''),
+        routeDistance: ko.observable('')
     };
 
     this.userId = window.sessionStorage.getItem("userId");
